@@ -40,7 +40,7 @@ describe('Observable', () => {
     }));
 
   describe('forEach', () => {
-    it.skip('should handle a synchronous throw from the next handler', () => {
+    it('should handle a synchronous throw from the next handler', () => {
       const expected = new Error('I told, you Bobby Boucher, threes are the debil!');
       const syncObservable = new Observable<number>((observer) => {
         observer.next(1);
