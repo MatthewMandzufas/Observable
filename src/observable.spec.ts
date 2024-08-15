@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
 import Observable from './new-observable.js';
-import { Subscription, config } from './observable.ts';
 
 function expectFullObserver(val: any) {
   expect(val).to.be.a('object');
