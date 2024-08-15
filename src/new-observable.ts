@@ -30,6 +30,7 @@ type Observer<T> = {
 
 interface ObservableInterface<T> {
   subscribe: (observer: Partial<Observer<T>>) => void;
+  forEach: (fn: (value: T) => void) => Promise<void>;
 }
 
 export default class Observable<T> implements ObservableInterface<T> {
@@ -49,5 +50,11 @@ export default class Observable<T> implements ObservableInterface<T> {
 
   subscribe({ next = () => {}, complete = () => {}, error = () => {}, closed = false }: Partial<Observer<T>>) {
     this.#fnThatIsCalledWithObserver({ next, error, complete, closed });
+  }
+
+  forEach(fn: (value: T) => void) {
+    return new Promise<void>((resolve, reject) => {
+      this.subscribe({ next: fn, error: reject, complete: resolve });
+    });
   }
 }
