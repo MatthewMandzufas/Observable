@@ -27,7 +27,7 @@ describe('Observable', () => {
       });
     }));
 
-  it.skip('should send errors thrown in the constructor down the error path', () =>
+  it('should send errors thrown in the constructor down the error path', () =>
     new Promise<void>((done) => {
       new Observable<number>(() => {
         throw new Error('this should be handled');
