@@ -71,7 +71,7 @@ describe('Observable', () => {
         );
     });
 
-    it.skip('should handle an asynchronous throw from the next handler and tear down', () => {
+    it('should handle an asynchronous throw from the next handler and tear down', () => {
       const expected = new Error('I told, you Bobby Boucher, twos are the debil!');
       const asyncObservable = new Observable<number>((observer) => {
         let i = 1;
