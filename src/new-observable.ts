@@ -28,28 +28,37 @@ type Observer<T> = {
   closed: boolean;
 };
 
+type UnsubscribeFunction = () => void;
+
 interface ObservableInterface<T> {
-  subscribe: (observer: Partial<Observer<T>>) => void;
+  subscribe: (observer?: Partial<Observer<T>>) => void;
   forEach: (fnCalledEachIteration: (value: T) => void) => Promise<void>;
 }
 
 export default class Observable<T> implements ObservableInterface<T> {
-  emitValuesToObserver: (observer: Observer<T>) => void;
+  emitValuesToObserver: (observer: Observer<T>) => UnsubscribeFunction;
 
-  constructor(emitValuesToObserver: (observer: Observer<T>) => void) {
+  constructor(emitValuesToObserver: (observer: Observer<T>) => void | UnsubscribeFunction) {
     this.emitValuesToObserver = (observer: Observer<T>) => {
       try {
-        emitValuesToObserver(observer);
+        return emitValuesToObserver(observer) ?? (() => {});
       } catch (error) {
         observer.error(error);
-        observer.complete();
-        observer.closed = true;
+        return () => {};
       }
     };
   }
 
-  subscribe(observer: Observer<T> | Partial<Observer<T>>) {
-    this.emitValuesToObserver({ error: () => {}, next: () => {}, complete: () => {}, closed: false, ...observer });
+  subscribe(observer?: Observer<T> | Partial<Observer<T>>) {
+    // eslint-disable-next-line prefer-const
+    let unsubscribe: UnsubscribeFunction;
+    const errorWrapper = (value: T) => {
+      if (observer?.error !== undefined) {
+        observer?.error(value);
+      }
+      unsubscribe();
+    };
+    unsubscribe = this.emitValuesToObserver({ next: () => {}, complete: () => {}, closed: false, ...observer, error: errorWrapper });
   }
 
   forEach(handleNext: (value: T) => void) {
