@@ -322,7 +322,7 @@ describe('Observable', () => {
       expect(activeSubscriptions).to.equal(0);
     });
 
-    it.skip('should unsubscribe if the for-await-of loop is broken with a thrown error', async () => {
+    it('should unsubscribe if the for-await-of loop is broken with a thrown error', async () => {
       const source = new Observable<number>((subscriber) => {
         subscriber.next(1);
         subscriber.next(2);
