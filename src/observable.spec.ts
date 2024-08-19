@@ -207,7 +207,7 @@ describe('Observable', () => {
       expect(unsubscribeCalled).to.be.true;
     });
 
-    it.skip('should finalize even with a synchronous thrown error', () => {
+    it('should finalize even with a synchronous thrown error', () => {
       let called = false;
       const badObservable = new Observable((subscriber) => {
         subscriber.add(() => {
