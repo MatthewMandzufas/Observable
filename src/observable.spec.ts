@@ -279,7 +279,7 @@ describe('Observable', () => {
   });
 
   describe('As an async iterable', () => {
-    it.skip('should be able to be used with for-await-of', async () => {
+    it('should be able to be used with for-await-of', async () => {
       const source = new Observable<number>((subscriber) => {
         subscriber.next(1);
         subscriber.next(2);
