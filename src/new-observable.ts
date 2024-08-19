@@ -30,6 +30,17 @@ type Observer<T> = {
 
 type UnsubscribeFunction = () => void;
 
+interface SubscriptionInterface {
+  unsubscribe: () => void;
+}
+
+export class Subscription implements SubscriptionInterface {
+  unsubscribe: UnsubscribeFunction;
+  constructor(unsubscribeFunction: UnsubscribeFunction) {
+    this.unsubscribe = unsubscribeFunction;
+  }
+}
+
 interface ObservableInterface<T> {
   subscribe: (observer?: Partial<Observer<T>>) => void;
   forEach: (fnCalledEachIteration: (value: T) => void) => Promise<void>;
@@ -59,6 +70,7 @@ export default class Observable<T> implements ObservableInterface<T> {
       unsubscribe();
     };
     unsubscribe = this.emitValuesToObserver({ next: () => {}, complete: () => {}, closed: false, ...observer, error: errorWrapper });
+    return new Subscription(unsubscribe);
   }
 
   forEach(handleNext: (value: T) => void) {
