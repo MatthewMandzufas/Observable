@@ -130,4 +130,21 @@ export default class Observable<T> implements ObservableInterface<T> {
       });
     });
   }
+
+  async *[Symbol.asyncIterator]() {
+    const results: T[] = [];
+    const subscriber = {
+      next: (value: T) => {
+        results.push(value);
+      },
+    };
+    const subscription = this.subscribe(subscriber);
+    try {
+      for (const result of results) {
+        yield result;
+      }
+    } finally {
+      subscription.unsubscribe();
+    }
+  }
 }
