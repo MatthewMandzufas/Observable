@@ -295,7 +295,7 @@ describe('Observable', () => {
       expect(results).to.deep.equal([1, 2, 3]);
     });
 
-    it.skip('should unsubscribe if the for-await-of loop is broken', async () => {
+    it('should unsubscribe if the for-await-of loop is broken', async () => {
       let activeSubscriptions = 0;
 
       const source = new Observable<number>((subscriber) => {
