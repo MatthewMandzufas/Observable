@@ -42,14 +42,14 @@ export default class Observable<T> implements ObservableInterface<T> {
         emitValuesToObserver(observer);
       } catch (error) {
         observer.error(error);
-        // observer.complete();
-        // observer.closed = true;
+        observer.complete();
+        observer.closed = true;
       }
     };
   }
 
-  subscribe({ next = () => {}, complete = () => {}, error = () => {}, closed = false }: Partial<Observer<T>>) {
-    this.emitValuesToObserver({ next, error, complete, closed });
+  subscribe(observer: Observer<T> | Partial<Observer<T>>) {
+    this.emitValuesToObserver({ error: () => {}, next: () => {}, complete: () => {}, closed: false, ...observer });
   }
 
   forEach(handleNext: (value: T) => void) {

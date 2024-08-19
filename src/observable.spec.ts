@@ -136,7 +136,7 @@ describe('Observable', () => {
       expect(mutatedByComplete).to.be.true;
     });
 
-    it.skip('should work when subscribe is called with no arguments', () => {
+    it('should work when subscribe is called with no arguments', () => {
       const source = new Observable<string>((subscriber) => {
         subscriber.next('foo');
         subscriber.complete();
