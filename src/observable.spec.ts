@@ -104,7 +104,7 @@ describe('Observable', () => {
   });
 
   describe('subscribe', () => {
-    it.skip('should be synchronous', () => {
+    it('should be synchronous', () => {
       let subscribed = false;
       let nexted: string;
       let completed: boolean;
