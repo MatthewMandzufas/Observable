@@ -26,6 +26,7 @@ type Observer<T> = {
   error: (err: any) => void;
   complete: () => void;
   closed: boolean;
+  add: (functionToCallWhenFinalizing: UnsubscribeFunction) => void;
 };
 
 type UnsubscribeFunction = () => void;
@@ -62,14 +63,27 @@ export default class Observable<T> implements ObservableInterface<T> {
 
   subscribe(observer?: Observer<T> | Partial<Observer<T>>) {
     // eslint-disable-next-line prefer-const
-    let unsubscribe: UnsubscribeFunction;
+    let unsubscribe: UnsubscribeFunction = () => {};
     const errorWrapper = (value: T) => {
       if (observer?.error !== undefined) {
         observer?.error(value);
       }
       unsubscribe();
     };
-    unsubscribe = this.emitValuesToObserver({ next: () => {}, complete: () => {}, closed: false, ...observer, error: errorWrapper });
+    unsubscribe = this.emitValuesToObserver({
+      next: () => {},
+      complete: () => {},
+      closed: false,
+      ...observer,
+      error: errorWrapper,
+      add: (functionToCallWhenFinalizing: UnsubscribeFunction) => {
+        const wrappedUnsubscribe = unsubscribe;
+        unsubscribe = () => {
+          functionToCallWhenFinalizing();
+          wrappedUnsubscribe();
+        };
+      },
+    });
     return new Subscription(unsubscribe);
   }
 
