@@ -344,7 +344,7 @@ describe('Observable', () => {
       expect(results).to.deep.equal([1]);
     });
 
-    it.skip('should cause the async iterator to throw if the observable errors', async () => {
+    it('should cause the async iterator to throw if the observable errors', async () => {
       const source = new Observable<number>((subscriber) => {
         subscriber.next(1);
         subscriber.next(2);
