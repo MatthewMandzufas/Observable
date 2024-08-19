@@ -145,7 +145,7 @@ describe('Observable', () => {
       source.subscribe();
     });
 
-    it.skip('should run unsubscription logic when an error is sent asynchronously and subscribe is called with no arguments', () =>
+    it('should run unsubscription logic when an error is sent asynchronously and subscribe is called with no arguments', () =>
       new Promise<void>((done, fail) => {
         const fakeTimer = vi.useFakeTimers();
 
