@@ -137,10 +137,14 @@ export default class Observable<T> implements ObservableInterface<T> {
       next: (value: T) => {
         results.push(value);
       },
+      error: (err: Error) => {
+        results.push(err);
+      },
     };
     const subscription = this.subscribe(subscriber);
     try {
       for (const result of results) {
+        if (result instanceof Error) throw result;
         yield result;
       }
     } finally {
