@@ -226,7 +226,7 @@ describe('Observable', () => {
       expect(called).to.be.true;
     });
 
-    it.skip('should handle empty string sync errors', () => {
+    it('should handle empty string sync errors', () => {
       const badObservable = new Observable(() => {
         throw '';
       });
