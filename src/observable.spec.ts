@@ -242,7 +242,7 @@ describe('Observable', () => {
     });
   });
 
-  it.skip('should emit an error for unhandled synchronous exceptions from something like a stack overflow', () => {
+  it('should emit an error for unhandled synchronous exceptions from something like a stack overflow', () => {
     const source = new Observable(() => {
       const boom = (): unknown => boom();
       boom();
