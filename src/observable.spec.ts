@@ -187,7 +187,7 @@ describe('Observable', () => {
         vi.useRealTimers();
       }));
 
-    it.skip('should return a Subscription that calls the unsubscribe function returned by the subscriber', () => {
+    it('should return a Subscription that calls the unsubscribe function returned by the subscriber', () => {
       let unsubscribeCalled = false;
 
       const source = new Observable<number>(() => {
