@@ -30,31 +30,45 @@ type Observer<T> = {
 
 interface ObservableInterface<T> {
   subscribe: (observer: Partial<Observer<T>>) => void;
-  forEach: (fn: (value: T) => void) => Promise<void>;
+  forEach: (fnCalledEachIteration: (value: T) => void) => Promise<void>;
 }
 
 export default class Observable<T> implements ObservableInterface<T> {
-  #fnThatIsCalledWithObserver: (observer: Observer<T>) => void;
+  emitValuesToObserver: (observer: Observer<T>) => void;
 
-  constructor(fnThatIsCalledWithObserver: (observer: Observer<T>) => void) {
-    this.#fnThatIsCalledWithObserver = (observer: Observer<T>) => {
+  constructor(emitValuesToObserver: (observer: Observer<T>) => void) {
+    this.emitValuesToObserver = (observer: Observer<T>) => {
       try {
-        fnThatIsCalledWithObserver(observer);
+        emitValuesToObserver(observer);
       } catch (error) {
-        if (observer && typeof observer.error === 'function') {
-          observer?.error(error);
-        }
+        observer.error(error);
+        // observer.complete();
+        // observer.closed = true;
       }
     };
   }
 
   subscribe({ next = () => {}, complete = () => {}, error = () => {}, closed = false }: Partial<Observer<T>>) {
-    this.#fnThatIsCalledWithObserver({ next, error, complete, closed });
+    this.emitValuesToObserver({ next, error, complete, closed });
   }
 
-  forEach(fn: (value: T) => void) {
+  forEach(handleNext: (value: T) => void) {
+    let closed = false;
     return new Promise<void>((resolve, reject) => {
-      this.subscribe({ next: fn, error: reject, complete: resolve });
+      this.subscribe({
+        next: (value: T) => {
+          try {
+            if (!closed) {
+              handleNext(value);
+            }
+          } catch (err) {
+            closed = true;
+            reject(err);
+          }
+        },
+        error: reject,
+        complete: resolve,
+      });
     });
   }
 }
