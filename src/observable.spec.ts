@@ -366,7 +366,7 @@ describe('Observable', () => {
       expect(results).to.deep.equal([1, 2]);
     });
 
-    it.skip('should unsubscribe from the source observable if `return` is called on the generator returned by Symbol.asyncIterator', async () => {
+    it('should unsubscribe from the source observable if `return` is called on the generator returned by Symbol.asyncIterator', async () => {
       let state = 'idle';
       const source = new Observable<number>((subscriber) => {
         state = 'subscribed';
