@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import Observable, { Subscription } from './new-observable.js';
+import Observable, { Subscription, config } from './new-observable.js';
 
 function expectFullObserver(val: any) {
   expect(val).to.be.a('object');
@@ -258,7 +258,7 @@ describe('Observable', () => {
   });
 
   describe('pipe', () => {
-    it.skip('should not swallow internal errors', () =>
+    it('should not swallow internal errors', () =>
       new Promise<void>((done) => {
         config.onStoppedNotification = (notification) => {
           expect(notification.kind).to.equal('E');
