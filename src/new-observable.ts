@@ -35,6 +35,23 @@ interface SubscriptionInterface {
   unsubscribe: () => void;
 }
 
+type Notification = {
+  kind: NotificationType;
+  error: unknown;
+};
+
+enum NotificationType {
+  ERROR = 'E',
+}
+
+interface Config {
+  onStoppedNotification: ((notification: Notification) => void) | null;
+}
+
+export const config: Config = {
+  onStoppedNotification: null,
+};
+
 export class Subscription implements SubscriptionInterface {
   unsubscribe: UnsubscribeFunction;
   constructor(unsubscribeFunction: UnsubscribeFunction) {
@@ -55,7 +72,14 @@ export default class Observable<T> implements ObservableInterface<T> {
       try {
         return emitValuesToObserver(observer) ?? (() => {});
       } catch (error) {
-        observer.error(error);
+        if (config.onStoppedNotification) {
+          config.onStoppedNotification({
+            kind: NotificationType.ERROR,
+            error,
+          });
+        } else {
+          observer.error(error);
+        }
         return () => {};
       }
     };
