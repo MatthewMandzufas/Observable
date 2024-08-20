@@ -289,6 +289,7 @@ describe('Observable', () => {
 
       const results: number[] = [];
       for await (const value of source) {
+        // console.log(value);
         results.push(value);
       }
 

@@ -131,24 +131,47 @@ export default class Observable<T> implements ObservableInterface<T> {
     });
   }
 
-  async *[Symbol.asyncIterator]() {
+  [Symbol.asyncIterator]() {
     const results: T[] = [];
+    let isComplete = false;
     const subscriber = {
       next: (value: T) => {
         results.push(value);
       },
-      error: (err: Error) => {
+      error: (err: T) => {
         results.push(err);
       },
+      complete: () => {
+        isComplete = true;
+      },
     };
-    const subscription = this.subscribe(subscriber);
-    try {
-      for (const result of results) {
-        if (result instanceof Error) throw result;
-        yield result;
-      }
-    } finally {
-      subscription.unsubscribe();
-    }
+
+    let subscription: Subscription;
+    return {
+      next: () => {
+        subscription === undefined && (subscription = this.subscribe(subscriber));
+        if (isComplete && results.length === 0) {
+          return {
+            done: true,
+          };
+        }
+
+        const value = results.shift();
+        if (value instanceof Error) {
+          throw value;
+        }
+        return {
+          value,
+          done: false,
+        };
+      },
+      return: () => {
+        subscription.unsubscribe();
+        return {
+          value: undefined,
+          done: true,
+        };
+      },
+    };
   }
 }
