@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import Observable, { Subscription, config } from './new-observable.js';
+import Observable, { Subscription, config } from './new-observable.ts';
 
 function expectFullObserver(val: any) {
   expect(val).to.be.a('object');
@@ -258,6 +258,47 @@ describe('Observable', () => {
   });
 
   describe('pipe', () => {
+    it('should exist', () => {
+      const source = new Observable((observable) => {
+        observable.next('test');
+      });
+      expect(source.pipe).to.be.a('function');
+    });
+
+    it('should pipe multiple operations', (done) => {
+      new Observable((observable) => {
+        observable.next('test');
+      })
+        .pipe(
+          map((x) => x + x),
+          map((x) => x + '!!!')
+        )
+        .subscribe({
+          next: (x) => {
+            expect(x).to.equal('testtest!!!');
+          },
+          complete: done,
+        });
+    });
+
+    it.skip('should return the same observable if there are no arguments', () => {
+      const source = new Observable((observable) => {
+        observable.next('test');
+      });
+      const result = source.pipe();
+      expect(result).to.equal(source);
+    });
+
+    it.skip('should allow any kind of piped function', () => {
+      const source = new Observable((observable) => {
+        observable.next('test');
+      });
+      const result = source.pipe(
+        (source) => source instanceof Observable,
+        (isObservable) => (isObservable ? 'Well hello, there.' : 'Huh?')
+      );
+      expect(result).to.equal('Well hello, there.');
+    });
     it('should not swallow internal errors', () =>
       new Promise<void>((done) => {
         config.onStoppedNotification = (notification) => {

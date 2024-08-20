@@ -62,6 +62,7 @@ export class Subscription implements SubscriptionInterface {
 interface ObservableInterface<T> {
   subscribe: (observer?: Partial<Observer<T>>) => void;
   forEach: (fnCalledEachIteration: (value: T) => void) => Promise<void>;
+  pipe: () => void;
 }
 
 export default class Observable<T> implements ObservableInterface<T> {
@@ -85,8 +86,9 @@ export default class Observable<T> implements ObservableInterface<T> {
     };
   }
 
+  pipe() {}
+
   subscribe(observer?: Observer<T> | Partial<Observer<T>>) {
-    // eslint-disable-next-line prefer-const
     let unsubscribe: UnsubscribeFunction = () => {};
     const errorWrapper = (value: T) => {
       if (observer?.error !== undefined) {

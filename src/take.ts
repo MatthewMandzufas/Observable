@@ -1,1 +1,1 @@
-export const take = () => {};
+export const take = (value: number) => {};

@@ -9,7 +9,7 @@
     "inlineSources": true,
     "jsx": "react",
     "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "moduleResolution": "NodeNext",
     "noUncheckedIndexedAccess": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
