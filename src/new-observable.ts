@@ -172,6 +172,12 @@ export default class Observable<T> implements ObservableInterface<T> {
           done: true,
         };
       },
+      throw: (exception?: Error) => {
+        subscription.unsubscribe();
+        return {
+          done: true,
+        };
+      },
     };
   }
 }
