@@ -25,7 +25,7 @@ describe('take', () => {
     });
   });
 
-  it.skip('should work with empty', () => {
+  it('should work with empty', () => {
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
       const e1 = cold(' |');
       const e1subs = '  (^!)';
