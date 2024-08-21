@@ -113,7 +113,7 @@ describe('take', () => {
     });
   });
 
-  it.skip('should propagate error from an observable with values', () => {
+  it('should propagate error from an observable with values', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('---^--a--b--#');
       const e1subs = '   ^--------!';
