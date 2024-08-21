@@ -91,7 +91,7 @@ describe('take', () => {
     });
   });
 
-  it.skip('should error on empty', () => {
+  it('should error on empty', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('--a--^----|');
       const e1subs = '     ^----!';
