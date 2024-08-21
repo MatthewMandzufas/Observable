@@ -47,7 +47,7 @@ describe('take', () => {
     });
   });
 
-  it.skip('should be empty on take(0)', () => {
+  it('should be empty on take(0)', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('--a--^--b----c---d--|');
       const e1subs: string[] = []; // Don't subscribe at all
