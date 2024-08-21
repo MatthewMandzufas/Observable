@@ -124,7 +124,7 @@ describe('take', () => {
     });
   });
 
-  it.skip('should allow unsubscribing explicitly and early', () => {
+  it('should allow unsubscribing explicitly and early', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('---^--a--b-----c--d--e--|');
       const unsub = '    ---------!------------';
