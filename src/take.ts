@@ -12,10 +12,11 @@ export const take =
           numberOfValuesToTake--;
           observer.next(value);
           if (numberOfValuesToTake <= 0) {
-            observer.complete();
             sourceSubscriber.unsubscribe();
+            observer.complete();
           }
         },
+        complete: () => observer.complete(),
       });
     });
   };
