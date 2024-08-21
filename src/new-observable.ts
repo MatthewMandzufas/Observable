@@ -1,3 +1,5 @@
+import type { UnaryFunction } from './pipe.ts';
+
 type NextObserver<T> = {
   closed?: boolean;
   next: (value: T) => void;
@@ -62,7 +64,14 @@ export class Subscription implements SubscriptionInterface {
 interface ObservableInterface<T> {
   subscribe: (observer?: Partial<Observer<T>>) => void;
   forEach: (fnCalledEachIteration: (value: T) => void) => Promise<void>;
-  pipe: () => void;
+  // pipe<A extends any[], B, C, D, E, R>(
+  //   f1: VariadicFunc<A, B>,
+  //   f2: UnaryFunction<B, C>,
+  //   f3: UnaryFunction<C, D>,
+  //   f4: UnaryFunction<D, E>,
+  //   f5: UnaryFunction<E, R>
+  // ): R;
+  pipe(...functions: Array<UnaryFunction<any, any>>): Observable<T>;
 }
 
 export default class Observable<T> implements ObservableInterface<T> {
@@ -86,9 +95,14 @@ export default class Observable<T> implements ObservableInterface<T> {
     };
   }
 
-  pipe() {}
+  pipe(...functions: Array<UnaryFunction<any, any>>) {
+    if (functions.length === 0) {
+      return this;
+    }
+    return functions.reduce((previousValue, currentFn) => currentFn(previousValue), this);
+  }
 
-  subscribe(observer?: Observer<T> | Partial<Observer<T>>) {
+  subscribe(observer?: Partial<Observer<T>>) {
     let unsubscribe: UnsubscribeFunction = () => {};
     const errorWrapper = (value: T) => {
       if (observer?.error !== undefined) {

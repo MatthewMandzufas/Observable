@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
+import { map } from '../rxjs/index.ts';
 import Observable, { Subscription, config } from './new-observable.ts';
 
 function expectFullObserver(val: any) {
@@ -270,8 +271,8 @@ describe('Observable', () => {
         observable.next('test');
       })
         .pipe(
-          map((x) => x + x),
-          map((x) => x + '!!!')
+          map((x: any) => x + x),
+          map((x: string) => x + '!!!')
         )
         .subscribe({
           next: (x) => {
@@ -281,7 +282,7 @@ describe('Observable', () => {
         });
     });
 
-    it.skip('should return the same observable if there are no arguments', () => {
+    it('should return the same observable if there are no arguments', () => {
       const source = new Observable((observable) => {
         observable.next('test');
       });
@@ -289,7 +290,7 @@ describe('Observable', () => {
       expect(result).to.equal(source);
     });
 
-    it.skip('should allow any kind of piped function', () => {
+    it('should allow any kind of piped function', () => {
       const source = new Observable((observable) => {
         observable.next('test');
       });
@@ -330,7 +331,6 @@ describe('Observable', () => {
 
       const results: number[] = [];
       for await (const value of source) {
-        // console.log(value);
         results.push(value);
       }
 

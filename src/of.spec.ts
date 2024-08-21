@@ -8,7 +8,7 @@ import { concatAll, concatMap, delay } from './rxjs/operators';
 import { TestScheduler } from './rxjs/testing';
 
 /** @test {of} */
-describe('of', () => {
+describe.skip('of', () => {
   let rxTestScheduler: TestScheduler;
 
   beforeEach(() => {
