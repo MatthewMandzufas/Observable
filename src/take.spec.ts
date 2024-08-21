@@ -80,7 +80,7 @@ describe('take', () => {
     });
   });
 
-  it.skip('should take one values of an observable with many values', () => {
+  it('should take one values of an observable with many values', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('--a--^--b----c---d--|');
       const e1subs = '     ^--!------------';
