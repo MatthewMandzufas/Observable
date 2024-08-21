@@ -106,7 +106,7 @@ export default class Observable<T> implements ObservableInterface<T> {
     let unsubscribe: UnsubscribeFunction = () => {};
     const errorWrapper = (value: T) => {
       if (observer?.error !== undefined) {
-        observer?.error(value);
+        observer.error(value);
       }
       unsubscribe();
     };
