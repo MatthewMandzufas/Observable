@@ -21,6 +21,7 @@ export const take =
               }
             },
             complete: () => observer.complete(),
+            error: (value) => observer.error(value),
           });
         });
   };
