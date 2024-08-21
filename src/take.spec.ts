@@ -36,7 +36,7 @@ describe('take', () => {
     });
   });
 
-  it.skip('should go on forever on never', () => {
+  it('should go on forever on never', () => {
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
       const e1 = cold(' -');
       const e1subs = '  ^';
