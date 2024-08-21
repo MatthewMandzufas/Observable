@@ -58,7 +58,7 @@ describe('take', () => {
     });
   });
 
-  it.skip('should be empty if provided with negative value', () => {
+  it('should be empty if provided with negative value', () => {
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
       const e1 = cold(' --a-----b----c---d--|');
       const expected = '|';
