@@ -102,7 +102,7 @@ describe('take', () => {
     });
   });
 
-  it.skip('should propagate error from the source observable', () => {
+  it('should propagate error from the source observable', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('---^---#', undefined, 'too bad');
       const e1subs = '   ^---!';
